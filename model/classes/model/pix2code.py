@@ -1,12 +1,12 @@
 from __future__ import absolute_import
 __author__ = 'Tony Beltramelli - www.tonybeltramelli.com'
 
-from keras.layers import Input, Dense, Dropout, \
+from tensorflow.keras.layers import Input, Dense, Dropout, \
                          RepeatVector, LSTM, concatenate, \
                          Conv2D, MaxPooling2D, Flatten
-from keras.models import Sequential, Model
-from keras.optimizers import RMSprop
-from keras import *
+from tensorflow.keras.models import Sequential, Model
+from tensorflow.keras.optimizers import RMSprop
+from tensorflow.keras import *
 from .Config import *
 from .AModel import *
 
@@ -58,7 +58,7 @@ class pix2code(AModel):
 
         self.model = Model(inputs=[visual_input, textual_input], outputs=decoder)
 
-        optimizer = RMSprop(lr=0.0001, clipvalue=1.0)
+        optimizer = RMSprop(learning_rate=0.0001, clipvalue=1.0)
         self.model.compile(loss='categorical_crossentropy', optimizer=optimizer)
 
     def fit(self, images, partial_captions, next_words):
@@ -66,7 +66,7 @@ class pix2code(AModel):
         self.save()
 
     def fit_generator(self, generator, steps_per_epoch):
-        self.model.fit_generator(generator, steps_per_epoch=steps_per_epoch, epochs=EPOCHS, verbose=1)
+        self.model.fit(generator, steps_per_epoch=steps_per_epoch, epochs=EPOCHS, verbose=1)
         self.save()
 
     def predict(self, image, partial_caption):
